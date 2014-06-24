@@ -2,7 +2,7 @@ module RailsAdminNestedSet
   module Helper
     def rails_admin_nested_set(tree, opts= {})
       if @abstract_model.model == Product
-        tree = tree.to_a.sort_by {|m| m.galleries_id }
+        tree = tree.to_a.sort_by { |m| m.galleries_id.present? ? m.galleries_id : m.lft }
       else
         tree = tree.to_a.sort_by { |m| m.lft }
       end
