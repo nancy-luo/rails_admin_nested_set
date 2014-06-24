@@ -1,7 +1,11 @@
 module RailsAdminNestedSet
   module Helper
     def rails_admin_nested_set(tree, opts= {})
-      tree = tree.to_a.sort_by { |m| m.lft }
+      if @abstract_model.model == Product
+        tree = tree.to_a.sort_by {|m| m.galleries_id }
+      else
+        tree = tree.to_a.sort_by { |m| m.lft }
+      end
       roots = tree.select{|elem| elem.parent_id.nil?}
       id = "ns_#{rand(100_000_000..999_999_999)}"
       content = content_tag(:ol, rails_admin_nested_set_builder(roots, tree), id: id, class: 'dd-list')
@@ -43,6 +47,9 @@ module RailsAdminNestedSet
             end
 
             content += link_to @model_config.with(object: node).object_label, edit_path(@abstract_model, node.id)
+            if @abstract_model.model == Product
+              content += content_tag(:span, "#{@abstract_model.model.find(node.id).gallery.name}", style: "margin-left: 150px;")
+            end
             content += content_tag(:div, action_links(node), class: 'pull-right links')
             
             thumbnail_fields.each do |mth|
