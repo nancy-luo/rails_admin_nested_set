@@ -48,7 +48,7 @@ module RailsAdminNestedSet
 
             content += link_to @model_config.with(object: node).object_label, edit_path(@abstract_model, node.id)
             if @abstract_model.model == Product
-              content += content_tag(:span, "#{@abstract_model.model.find(node.id).gallery.name}", style: "margin-left: 150px;")
+              content += content_tag(:span, "#{@abstract_model.model.find(node.id).gallery.try(name)}", style: "margin-left: 150px;")
             end
             content += content_tag(:div, action_links(node), class: 'pull-right links')
             
